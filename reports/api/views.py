@@ -3,12 +3,14 @@ from django.views.decorators.csrf import csrf_exempt
 
 from rest_framework.parsers import JSONParser
 from rest_framework.decorators import api_view
+from rest_framework.permissions import IsAuthenticated
 
 from reports.models import Category, Report
 from reports.api.serializers import CategorySerializer, ReportSerializer
 
 @csrf_exempt
 def category_list(request):
+    permission_classes = (IsAuthenticated,)
     if request.method == 'GET':
         category = Category.objects.all()
         serializer = CategorySerializer(category, many=True)

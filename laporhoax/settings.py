@@ -37,15 +37,23 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
 
     'rest_framework',
     'rest_framework.authtoken',
+    'django_rest_passwordreset',
+
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
 
     'six',
     'phonenumber_field',
 
     'accounts',
     'reports',
+    'feeds',
 ]
 
 REST_FRAMEWORK = {
@@ -53,6 +61,7 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.TokenAuthentication'
     ]
 }
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -150,3 +159,33 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'rubyghozal@gmail.com'
 EMAIL_HOST_PASSWORD = 'sapibetina'
 EMAIL_PORT = 587
+
+#allauth addition
+
+#LOGIN_REDIRECT_URL = "/" => change later
+ACCOUNT_FORMS = {'signup': 'accounts.forms.UserSocialForm'}
+ACCOUNT_USER_MODEL_USERNAME_FIELD = "email"
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend'
+]
+
+SITE_ID = 1
+
+SOCIALACCOUNT_QUERY_EMAIL = True
+ACCOUNT_LOGOUT_ON_GET= True
+ACCOUNT_UNIQUE_EMAIL = True
+ACCOUNT_EMAIL_REQUIRED = True
+
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        'SCOPE': [
+            'profile',
+            'email',
+        ],
+        'AUTH_PARAMS': {
+            'access_type': 'online',
+        }
+    }
+}

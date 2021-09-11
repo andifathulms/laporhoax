@@ -2,17 +2,24 @@ from rest_framework import parsers, renderers, status
 from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
 from rest_framework.decorators import api_view
+from rest_framework.parsers import JSONParser
 
-from django.http import HttpResponse
+from django_rest_passwordreset.signals import reset_password_token_created
+
+from django.http import HttpResponse, JsonResponse
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes, force_text
 
-from django.core.mail import EmailMessage
+from django.core.mail import EmailMessage, send_mail
+from django.dispatch import receiver
+from django.views.decorators.csrf import csrf_exempt
+from django.urls import reverse
 from django.template.loader import render_to_string
 
 from accounts.models import User
-from .serializers import RegistrationSerializer, CustomTokenSerializer
+from .serializers import RegistrationSerializer, CustomTokenSerializer, isActiveSerializer
 from .tokens import account_activation_token
+
 
 @api_view(['POST', ])
 def registrationView(request):
@@ -38,6 +45,32 @@ def registrationView(request):
 		else:
 			data = serializer.errors
 		return Response(data)
+
+@csrf_exempt
+def isActive(request):
+	data = JSONParser().parse(request)
+	try:
+		snippet = [Token.objects.get(key=data["key"])]
+		email = snippet[0].user
+		user = [User.objects.get(email=email)]
+	except Token.DoesNotExist:
+		return HttpResponse(status=404)
+	if request.method == 'GET':
+		serializer = isActiveSerializer(user, many=True)
+		#print(serializer)
+		return JsonResponse(serializer.data, safe=False)
+
+@receiver(reset_password_token_created)
+def password_reset_token_created(sender, instance, reset_password_token, *args, **kwargs):
+
+    email_plaintext_message = "http://127.0.0.1:8000/{}?token={}".format(reverse('password_reset:reset-password-request'), reset_password_token.key)
+
+    send_mail(
+        "Password Reset for {title}".format(title="Lapor Hoax"),
+        email_plaintext_message,
+        "noreply@somehost.local",
+        [reset_password_token.user.email]
+    )
 
 def emailSender(user):
 	mail_subject = "Aktifasi akun anda"

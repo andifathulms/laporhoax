@@ -30,5 +30,10 @@ class RegistrationSerializer(serializers.ModelSerializer):
         user.save()
         return user
 
+class isActiveSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['is_active','is_staff','is_admin']
+
 class CustomTokenSerializer(serializers.Serializer):
     token = serializers.CharField()
