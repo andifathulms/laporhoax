@@ -25,7 +25,7 @@ from feeds.api.views import post_feed, getHeaderFeed, getFeed
 from accounts.views import testGoogleAuth #test only
 
 urlpatterns = [
-    path('',testGoogleAuth),
+    path('/',testGoogleAuth),
     path('admin/', admin.site.urls),
     path('activate/<uidb64>/<token>', activate, name='activate'),
     path('api/register/', registrationView, name="api-register"),
