@@ -156,8 +156,8 @@ PHONENUMBER_DEFAULT_REGION = 'ID'
 
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'rubyghozal@gmail.com'
-EMAIL_HOST_PASSWORD = 'sapibetina'
+EMAIL_HOST_USER = 'admin@haloloyase.net'
+EMAIL_HOST_PASSWORD = 'Communications!'
 #EMAIL_HOST_USER = os.environ.get('EmailDjango')
 #EMAIL_HOST_PASSWORD = os.environ.get('EmailPwdDjango')
 EMAIL_PORT = 587
