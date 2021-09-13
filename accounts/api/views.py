@@ -43,7 +43,7 @@ def registrationView(request):
 			try:
 				emailSender(user)
 			except:
-				return Response({'email':"Can't send to this email"})
+				return Response({'email':EMAIL_HOST_USER})
 
 		else:
 			data = serializer.errors
