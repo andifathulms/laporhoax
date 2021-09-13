@@ -116,9 +116,12 @@ def verifyOTP(request):
 			#serializer.save()
 			print(data["email"])
 			user = UserOTP.objects.get(email=data["email"])
+			userReal = User.objects.get(email=data["email"])
 			if user.otp == data["otp"]:
 				user.status = "Activated"
 				user.save()
+				userReal.is_active = True
+				userReal.save()
 				return JsonResponse({'status':'OK'})
 			return JsonResponse({'status':'OTP invalid'})
 		return JsonResponse(serializer.errors, status=400)
