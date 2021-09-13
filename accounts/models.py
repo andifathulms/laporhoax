@@ -30,3 +30,7 @@ class User(AbstractBaseUser):
 	def has_module_perms(self, app_label):
 		return True
 
+class UserOTP(models.Model):
+	email = models.EmailField()
+	otp = models.CharField(max_length=10)
+	status = models.CharField(max_length=25, default="Not Activated")

@@ -18,19 +18,20 @@ from django.urls import path, include
 
 from rest_framework.authtoken.views import obtain_auth_token
 
-from accounts.api.views import registrationView, activate, isActive
+from accounts.api.views import registrationView, activate, isActive, verifyOTP
 from reports.api.views import category_list, post_report, report_list
 from feeds.api.views import post_feed, getHeaderFeed, getFeed
 
 from accounts.views import testGoogleAuth #test only
 
 urlpatterns = [
-    path('/',testGoogleAuth),
+    path('',testGoogleAuth),
     path('admin/', admin.site.urls),
     path('activate/<uidb64>/<token>', activate, name='activate'),
     path('api/register/', registrationView, name="api-register"),
     path('api/login/',obtain_auth_token,name="api-login"), #ok
-    path('api/isactive/', isActive, name= "api-isactive"),
+    path('api/isactive/', isActive, name= "api-isactive"), #ok
+    path('api/verifyotp/', verifyOTP, name= "api-verifyotp"),
     path('api/getcategory/', category_list, name= "api-getcategory"),
     path('api/postreport/', post_report, name= "api-postreport"),
     path('api/getreport/', report_list, name= "api-getreport"),

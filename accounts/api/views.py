@@ -16,8 +16,11 @@ from django.views.decorators.csrf import csrf_exempt
 from django.urls import reverse
 from django.template.loader import render_to_string
 
-from accounts.models import User
-from .serializers import RegistrationSerializer, CustomTokenSerializer, isActiveSerializer
+import random
+import math
+
+from accounts.models import User, UserOTP
+from .serializers import RegistrationSerializer, CustomTokenSerializer, isActiveSerializer, userOTPSerializer
 from .tokens import account_activation_token
 
 
@@ -72,18 +75,50 @@ def password_reset_token_created(sender, instance, reset_password_token, *args, 
         [reset_password_token.user.email]
     )
 
+def getOTP():
+	digits = [i for i in range(0, 10)]
+	random_str = ""
+
+	for i in range(6):
+		index = math.floor(random.random() * 10)
+		random_str += str(digits[index])
+
+	return random_str
+
 def emailSender(user):
+	otp = getOTP()
+	userotp = UserOTP.objects.create(email=user.email,otp=otp)
+	userotp.save()
+	print("userotp saved")
 	mail_subject = "Aktifasi akun anda"
 	message = render_to_string('acc_active_email.html',{
 		'user' : user,
 		'domain' : "https://laporhoaxpnp.herokuapp.com",
 		'uid': urlsafe_base64_encode(force_bytes(user.pk)),
 		'token' : account_activation_token.make_token(user),
+		'otp' : otp,
 	})
-	
+	print("email ready")
 	to_email = user.email
 	email = EmailMessage(mail_subject, message, to=[to_email])
 	email.send()
+	print("email sent")
+
+@api_view(['POST', ])
+def verifyOTP(request):
+	if request.method == "POST":
+		data = JSONParser().parse(request)
+		serializer = userOTPSerializer(data=data)
+		if serializer.is_valid():
+			#serializer.save()
+			print(data["email"])
+			user = UserOTP.objects.get(email=data["email"])
+			if user.otp == data["otp"]:
+				user.status = "Activated"
+				user.save()
+				return JsonResponse({'status':'OK'})
+			return JsonResponse({'status':'OTP invalid'})
+		return JsonResponse(serializer.errors, status=400)
 
 def activate(request, uidb64, token):
 	try:

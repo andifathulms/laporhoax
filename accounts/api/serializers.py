@@ -1,7 +1,7 @@
 from django.db import transaction
 from rest_framework import serializers
 
-from accounts.models import User
+from accounts.models import User, UserOTP
 
 class RegistrationSerializer(serializers.ModelSerializer):
     confirm_password = serializers.CharField(style={'input_type' : 'password'}, write_only=True)
@@ -37,3 +37,8 @@ class isActiveSerializer(serializers.ModelSerializer):
 
 class CustomTokenSerializer(serializers.Serializer):
     token = serializers.CharField()
+
+class userOTPSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserOTP
+        fields = '__all__'
