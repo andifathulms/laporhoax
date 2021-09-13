@@ -29,7 +29,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('activate/<uidb64>/<token>', activate, name='activate'),
     path('api/register/', registrationView, name="api-register"),
-    path('api/login/',obtain_auth_token,name="api-login"),
+    path('api/login/',obtain_auth_token,name="api-login"), #ok
     path('api/isactive/', isActive, name= "api-isactive"),
     path('api/getcategory/', category_list, name= "api-getcategory"),
     path('api/postreport/', post_report, name= "api-postreport"),

@@ -76,7 +76,7 @@ def emailSender(user):
 	mail_subject = "Aktifasi akun anda"
 	message = render_to_string('acc_active_email.html',{
 		'user' : user,
-		'domain' : "http://127.0.0.1:8000",
+		'domain' : "https://laporhoaxpnp.herokuapp.com",
 		'uid': urlsafe_base64_encode(force_bytes(user.pk)),
 		'token' : account_activation_token.make_token(user),
 	})
