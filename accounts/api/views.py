@@ -40,14 +40,14 @@ def registrationView(request):
 			data['is_admin'] = user.is_admin
 			token = Token.objects.create(user=user).key
 			data['token'] = token
-			#try:
-			emailSender(user)
-			#except:
-			#	return Response({'email':'Cant send this email'})
+			try:
+				err = emailSender(user)
+			except:
+				return Response({'email':'Cant send this email'})
 
 		else:
 			data = serializer.errors
-		return Response(data)
+		return Response(err)
 
 @csrf_exempt
 def isActive(request):
