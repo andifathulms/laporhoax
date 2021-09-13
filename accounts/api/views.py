@@ -90,7 +90,7 @@ def getOTP():
 def emailSender(user):
 	otp = getOTP()
 		
-	mail_subject = "Aktifasi akun anda"
+	mail_subject = "Kode OTP Lapor Hoax"
 	message = render_to_string('acc_active_email.html',{
 		'user' : user,
 		'domain' : "https://laporhoaxpnp.herokuapp.com",
@@ -104,7 +104,6 @@ def emailSender(user):
 
 	userotp = UserOTP.objects.create(email=user.email,otp=otp)
 	userotp.save()
-	print("email sent")
 	return Response({'status':err})
 	#return HttpResponse(err)
 

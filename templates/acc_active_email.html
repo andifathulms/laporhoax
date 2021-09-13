@@ -1,7 +1,7 @@
 {% autoescape off %}
 Hi {{ user.username }},
-Please click on the link to confirm your registration,
+Berikut merupakan Kode OTP untuk melanjutkan registrasi di Lapor Hoax,
 
-http://{{ domain }}{% url 'activate' uidb64=uid token=token %}
+<!--http://{{ domain }}{% url 'activate' uidb64=uid token=token %}-->
 Kode OTP = {{otp}}
 {% endautoescape %}
