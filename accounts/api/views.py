@@ -90,22 +90,20 @@ def emailSender(user):
 	userotp = UserOTP.objects.create(email=user.email,otp=otp)
 	userotp.save()
 	
-	try:
-		mail_subject = "Aktifasi akun anda"
-		message = render_to_string('acc_active_email.html',{
-			'user' : user,
-			'domain' : "https://laporhoaxpnp.herokuapp.com",
-			'uid': urlsafe_base64_encode(force_bytes(user.pk)),
-			'token' : account_activation_token.make_token(user),
-			'otp' : otp,
-		})
-		to_email = user.email
-		email = EmailMessage(mail_subject, message, to=[to_email])
-		email.send()
-		print("email sent")
-	except Exception as err:
-		#return Response({'status':err})
-		return HttpResponse(err)
+	mail_subject = "Aktifasi akun anda"
+	message = render_to_string('acc_active_email.html',{
+		'user' : user,
+		'domain' : "https://laporhoaxpnp.herokuapp.com",
+		'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+		'token' : account_activation_token.make_token(user),
+		'otp' : otp,
+	})
+	to_email = user.email
+	email = EmailMessage(mail_subject, message, to=[to_email])
+	email.send()
+	print("email sent")
+	return Response({'status':err})
+	#return HttpResponse(err)
 
 @api_view(['POST', ])
 def verifyOTP(request):
