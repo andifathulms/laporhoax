@@ -41,13 +41,13 @@ def registrationView(request):
 			token = Token.objects.create(user=user).key
 			data['token'] = token
 			try:
-				err = emailSender(user)
+				emailSender(user)
 			except:
 				return Response({'email':'Cant send this email'})
 
 		else:
 			data = serializer.errors
-		return Response(err)
+		return Response(data)
 
 @csrf_exempt
 def isActive(request):
@@ -104,7 +104,8 @@ def emailSender(user):
 		email.send()
 		print("email sent")
 	except Exception as err:
-		return Response({'status':err})
+		#return Response({'status':err})
+		return HttpResponse(err)
 
 @api_view(['POST', ])
 def verifyOTP(request):
