@@ -104,7 +104,7 @@ def emailSender(user):
 
 	userotp = UserOTP.objects.create(email=user.email,otp=otp)
 	userotp.save()
-	return Response({'status':err})
+	return Response({'status':'OK'})
 	#return HttpResponse(err)
 
 @api_view(['POST', ])
