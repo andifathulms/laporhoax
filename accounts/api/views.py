@@ -31,6 +31,12 @@ def registrationView(request):
 		data = {}
 		if serializer.is_valid():
 			user = serializer.save()
+
+			try:
+				emailSender(user)
+			except:
+				return Response({'email':'Cant send this email'})
+
 			data['response'] = "Confirmation Pending"
 			data['email'] = user.email
 			data['name'] = user.name
@@ -40,10 +46,6 @@ def registrationView(request):
 			data['is_admin'] = user.is_admin
 			token = Token.objects.create(user=user).key
 			data['token'] = token
-			try:
-				emailSender(user)
-			except:
-				return Response({'email':'Cant send this email'})
 
 		else:
 			data = serializer.errors
@@ -87,9 +89,7 @@ def getOTP():
 
 def emailSender(user):
 	otp = getOTP()
-	userotp = UserOTP.objects.create(email=user.email,otp=otp)
-	userotp.save()
-	
+		
 	mail_subject = "Aktifasi akun anda"
 	message = render_to_string('acc_active_email.html',{
 		'user' : user,
@@ -101,6 +101,9 @@ def emailSender(user):
 	to_email = user.email
 	email = EmailMessage(mail_subject, message, to=[to_email])
 	email.send()
+
+	userotp = UserOTP.objects.create(email=user.email,otp=otp)
+	userotp.save()
 	print("email sent")
 	return Response({'status':err})
 	#return HttpResponse(err)
