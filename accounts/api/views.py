@@ -43,7 +43,7 @@ def registrationView(request):
 			try:
 				emailSender(user)
 			except:
-				return Response({'email':EMAIL_HOST_USER})
+				return Response({'email':'Cant send this email'})
 
 		else:
 			data = serializer.errors
@@ -89,20 +89,22 @@ def emailSender(user):
 	otp = getOTP()
 	userotp = UserOTP.objects.create(email=user.email,otp=otp)
 	userotp.save()
-	print("userotp saved")
-	mail_subject = "Aktifasi akun anda"
-	message = render_to_string('acc_active_email.html',{
-		'user' : user,
-		'domain' : "https://laporhoaxpnp.herokuapp.com",
-		'uid': urlsafe_base64_encode(force_bytes(user.pk)),
-		'token' : account_activation_token.make_token(user),
-		'otp' : otp,
-	})
-	print("email ready")
-	to_email = user.email
-	email = EmailMessage(mail_subject, message, to=[to_email])
-	email.send()
-	print("email sent")
+	
+	try:
+		mail_subject = "Aktifasi akun anda"
+		message = render_to_string('acc_active_email.html',{
+			'user' : user,
+			'domain' : "https://laporhoaxpnp.herokuapp.com",
+			'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+			'token' : account_activation_token.make_token(user),
+			'otp' : otp,
+		})
+		to_email = user.email
+		email = EmailMessage(mail_subject, message, to=[to_email])
+		email.send()
+		print("email sent")
+	except Exception as err:
+		return Response({'status':err})
 
 @api_view(['POST', ])
 def verifyOTP(request):
