@@ -170,6 +170,7 @@ EMAIL_PORT = 587
 #LOGIN_REDIRECT_URL = "/" => change later
 ACCOUNT_FORMS = {'signup': 'accounts.forms.UserSocialForm'}
 ACCOUNT_USER_MODEL_USERNAME_FIELD = "email"
+ACCOUNT_SESSION_REMEMBER = True
 
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',

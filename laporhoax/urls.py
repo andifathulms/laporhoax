@@ -33,11 +33,11 @@ urlpatterns = [
     path('api/isactive/', isActive, name= "api-isactive"), #ok
     path('api/verifyotp/', verifyOTP, name= "api-verifyotp"), #ok
     path('api/getcategory/', category_list, name= "api-getcategory"), #ok
-    path('api/postreport/', post_report, name= "api-postreport"),
-    path('api/getreport/', report_list, name= "api-getreport"),
-    path('api/postfeed/', post_feed, name= "api-postfeed"),
-    path('api/getfeed/', getHeaderFeed, name= "api-getfeed"),
-    path('api/getfeed/<pk>', getFeed, name= "api-getfeed-pk"),
-    path('api/password_reset/', include('django_rest_passwordreset.urls', namespace='password_reset')),
+    path('api/postreport/', post_report, name= "api-postreport"), #ok
+    path('api/getreport/', report_list, name= "api-getreport"), #ok
+    path('api/postfeed/', post_feed, name= "api-postfeed"), #ok
+    path('api/getfeed/', getHeaderFeed, name= "api-getfeed"), #ok
+    path('api/getfeed/<pk>', getFeed, name= "api-getfeed-pk"), #ok
+    path('api/password_reset/', include('django_rest_passwordreset.urls', namespace='password_reset')), #ok
     path('api/allauth/', include('allauth.urls')), #test
 ]

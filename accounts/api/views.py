@@ -68,8 +68,8 @@ def isActive(request):
 @receiver(reset_password_token_created)
 def password_reset_token_created(sender, instance, reset_password_token, *args, **kwargs):
 
-    email_plaintext_message = "http://127.0.0.1:8000/{}?token={}".format(reverse('password_reset:reset-password-request'), reset_password_token.key)
-
+    #email_plaintext_message = "https://laporhoaxpnp.herokuapp.com/{}?token={}".format(reverse('password_reset:reset-password-request'), reset_password_token.key)
+    email_plaintext_message = "Token = {}".format(reverse('password_reset:reset-password-request'), reset_password_token.key)
     send_mail(
         "Password Reset for {title}".format(title="Lapor Hoax"),
         email_plaintext_message,
