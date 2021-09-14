@@ -28,11 +28,11 @@ urlpatterns = [
     path('',testGoogleAuth),
     path('admin/', admin.site.urls),
     path('activate/<uidb64>/<token>', activate, name='activate'),
-    path('api/register/', registrationView, name="api-register"),
+    path('api/register/', registrationView, name="api-register"), #ok
     path('api/login/',obtain_auth_token,name="api-login"), #ok
     path('api/isactive/', isActive, name= "api-isactive"), #ok
-    path('api/verifyotp/', verifyOTP, name= "api-verifyotp"),
-    path('api/getcategory/', category_list, name= "api-getcategory"),
+    path('api/verifyotp/', verifyOTP, name= "api-verifyotp"), #ok
+    path('api/getcategory/', category_list, name= "api-getcategory"), #ok
     path('api/postreport/', post_report, name= "api-postreport"),
     path('api/getreport/', report_list, name= "api-getreport"),
     path('api/postfeed/', post_feed, name= "api-postfeed"),

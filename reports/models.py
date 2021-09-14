@@ -10,9 +10,10 @@ class Category(models.Model):
 class Report(models.Model):
 	id = models.BigAutoField(primary_key=True)
 	email = models.EmailField()
-	url = models.CharField(max_length = 200)
+	url = models.CharField(max_length = 200,blank=True,null=True)
 	img = models.TextField()
 	category = models.ForeignKey(Category, on_delete=models.CASCADE)
 	report = models.CharField(default="Saved", max_length = 20)
 	isAnonym = models.BooleanField(default=False)
 	date = models.DateTimeField(auto_now_add=True)
+	description = models.CharField(max_length = 150)
