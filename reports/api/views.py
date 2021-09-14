@@ -23,7 +23,7 @@ def post_report(request):
 		serializer = ReportSerializer(data=data)
 		if serializer.is_valid():
 			serializer.save()
-			return JsonResponse(serializer.data, status=201)
+			return JsonResponse({'status':'OK'}, status=201)
 		return JsonResponse(serializer.errors, status=400)
 
 @csrf_exempt
